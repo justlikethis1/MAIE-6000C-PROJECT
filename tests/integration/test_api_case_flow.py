@@ -37,3 +37,10 @@ def test_create_and_read_case_and_job(client):
     job_response = client.get(f"/jobs/{job_id}")
     assert job_response.status_code == 200
     assert job_response.json()["case_id"] == case_id
+
+
+def test_read_missing_case_returns_404(client):
+    response = client.get("/cases/not-a-real-case")
+
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Case not found"
